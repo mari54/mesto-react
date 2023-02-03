@@ -23,24 +23,31 @@ class Api {
     }).then(this._checkServer);
   }
 
-  setProfile(object) {
+  setUserInfo(name, about) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name: object.name,
-        about: object.about,
+        name: name,
+        about: about,
       }),
     }).then(this._checkServer);
   }
 
-  setAvatar(object) {
+  setUserAvatar(avatar) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: object.avatar,
+        avatar,
       }),
+    }).then(this._checkServer);
+  }
+
+  changeLikeCardStatus(id, isLiked) {
+    return fetch(`${this._url}/cards/likes/${id}`, {
+      method: `${isLiked ? 'PUT' : 'DELETE'}`,
+      headers: this._headers,
     }).then(this._checkServer);
   }
 
@@ -58,13 +65,13 @@ class Api {
     }).then(this._checkServer);
   }
 
-  addCards(object) {
+  addCards(title, link) {
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
-        name: object.name,
-        link: object.link,
+        name: title,
+        link: link,
       }),
     }).then(this._checkServer);
   }
@@ -75,7 +82,15 @@ class Api {
       headers: this._headers,
     }).then(this._checkServer);
   }
+
+  getPromiseAll() {
+    return Promise.all([
+        this.getProfile(),
+        this.getInitialCards()
+    ]);
+  }
 }
+
 
 const api = new Api({
     url: 'https://mesto.nomoreparties.co/v1/cohort-56',
