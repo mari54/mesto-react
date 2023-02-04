@@ -82,13 +82,6 @@ class Api {
       headers: this._headers,
     }).then(this._checkServer);
   }
-
-  getPromiseAll() {
-    return Promise.all([
-        this.getProfile(),
-        this.getInitialCards()
-    ]);
-  }
 }
 
 

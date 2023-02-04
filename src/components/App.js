@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -13,13 +13,13 @@ import AddPlacePopup from './AddPlacePopup';
 
 function App() {
 
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
 
   function handleEditAvatarClick() {
@@ -83,13 +83,15 @@ function App() {
       
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    })
+    .catch(err => console.log(`Ошибка.....: ${err}`))
   }
   
   function handleCardDelete(card) {
     api.deleteCards(card._id).then(() => {
-      setCards(cards.filter(item => item !== card))
+      setCards((cards) => cards.filter(item => item._id != card._id));
     })
+    .catch(err => console.log(`Ошибка.....: ${err}`))
   }
 
   function handleAddPlaceSubmit(title, link) {

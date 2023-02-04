@@ -5,16 +5,16 @@ import PopupWithForm from "./PopupWithForm";
 const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   const [name, setName] = React.useState("");
   const [about, setAbout] = React.useState("");
-  const currentUser = React.useContext(CurrentUserContext); // Подписка на контекст
+  const currentUser = React.useContext(CurrentUserContext);                // Подписка на контекст
 
   React.useEffect(() => {
     setName(currentUser.name || "");
     setAbout(currentUser.about || "");
-  }, [currentUser]); // После загрузки текущего пользователя из API, его данные будут использованы в управляемых компонентах
+  }, [currentUser, isOpen]);                                               // После загрузки текущего пользователя из API, его данные будут использованы в управляемых компонентах
 
   function handleSubmit(e) {
-    e.preventDefault(); // Запрещаем браузеру переходить по адресу формы
-    onUpdateUser(name, about); // Передаём значения управляемых компонентов во внешний обработчик
+    e.preventDefault();                                                    // Запрещаем браузеру переходить по адресу формы
+    onUpdateUser(name, about);                                             // Передаём значения управляемых компонентов во внешний обработчик
   }
 
   return (
